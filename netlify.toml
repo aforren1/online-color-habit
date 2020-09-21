@@ -1,4 +1,4 @@
-# starting for FF79, these headers *might* let us use higher-res timers?
+# starting for FF79, these headers let us use higher-res timers (i.e. < 1ms resolution)
 # See https://developer.mozilla.org/en-US/docs/Web/API/Performance/now
 # and https://docs.netlify.com/routing/headers/#syntax-for-the-headers-file for 
 # netlify-specific details

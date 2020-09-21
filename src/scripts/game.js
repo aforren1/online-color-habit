@@ -1,6 +1,5 @@
 import '@babel/polyfill'
-//import Phaser from 'phaser'
-import Phaser from './phaser-custom' // TODO: slightly more nuanced custom build
+import Phaser from './phaser-custom' // slightly more nuanced custom build
 
 import log from './utils/logger'
 import 'devtools-detect'
@@ -9,14 +8,14 @@ import UAParser from 'ua-parser-js'
 import RoundRectanglePlugin from 'phaser3-rex-plugins/plugins/roundrectangle-plugin.js'
 import TextTypingPlugin from 'phaser3-rex-plugins/plugins/texttyping-plugin.js'
 import BBCodeTextPlugin from 'phaser3-rex-plugins/plugins/bbcodetext-plugin.js'
-
+import BitmapZonePlugin from 'phaser3-rex-plugins/plugins/bitmapzone-plugin.js'
 import TitleScene from './scenes/titleScene'
 
 // let small_dim = Math.min(screen.width, screen.height)
 let small_dim = 800 // nothing's going to be perfectly scaled, but that's fine?
 const config = {
   type: Phaser.AUTO,
-  backgroundColor: '#1a1a1a',
+  backgroundColor: '#222222',
   scale: {
     parent: 'phaser-game',
     mode: Phaser.Scale.FIT,
@@ -42,6 +41,11 @@ const config = {
         plugin: BBCodeTextPlugin,
         start: true,
       },
+      {
+        key: 'rexBitmapZonePlugin',
+        plugin: BitmapZonePlugin,
+        start: true,
+      },
     ],
   },
 }
@@ -64,7 +68,6 @@ window.addEventListener('load', () => {
   // TODO: figure out prolific/mturk/elsewhere here (URL parsing)
 
   let firstVisit = true
-  let localStorage = window.localStorage
   if (localStorage.getItem('returning') !== null) {
     firstVisit = false
   }
@@ -104,7 +107,7 @@ window.addEventListener('load', () => {
     start_date: visitTimes.slice(-1)[0],
     start_dates: visitTimes,
     exit_dates: exitTimes,
-    fullscreen_supported: document.fullscreenEnabled // this is pretty critical for us?
+    fullscreen_supported: document.fullscreenEnabled, // this is pretty critical for us?
   }
   // set up for user
   log.info('Exiting initialization.')
@@ -135,12 +138,10 @@ window.addEventListener('unload', (event) => {
     exits.push(new Date())
   }
   store.setItem('exit_times', JSON.stringify(exits))
-  log.msgs = [] // empty messages (necessary? we're on the way out anyway...)
 })
 
 // breaks on IE, so dump if that's really a big deal
 // Might be able to polyfill our way out, too?
 window.addEventListener('devtoolschange', (event) => {
   log.warn(`Devtools opened: ${event.detail.isOpen} at time ${window.performance.now()}`)
-  log.msgs = [] // empty messages
 })

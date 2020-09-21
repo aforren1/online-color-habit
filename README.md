@@ -1,5 +1,8 @@
 https://actlab-colorific.netlify.app
 
+local devel: `npm run start` (no data saving, but everything else)
+(`netlify dev` to try bundled version + netlify fns)
+
 # Setup
 
 1. Install npm
@@ -20,7 +23,7 @@ https://actlab-colorific.netlify.app
 - Add debug version to check timing via photosensor
 - Should probably recommend folks use Chrome or Chromium-based browsers, which have better timing qualities (e.g. new Edge)
 - Ask folks to _please_ use the same browser for entire task (we can't do cross-browser localStorage)
-- Set the following for Firefox's sake (might allow for higher-res timers in FF79+? See bottom of https://developer.mozilla.org/en-US/docs/Web/API/Performance/now):
+- (done, and seems to work!) Set the following for Firefox's sake (might allow for higher-res timers in FF79+? See bottom of https://developer.mozilla.org/en-US/docs/Web/API/Performance/now):
 
 ```
 Cross-Origin-Opener-Policy: same-origin
