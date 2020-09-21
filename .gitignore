@@ -3,3 +3,6 @@ dist
 *.env
 npm-debug.log
 *.Rhistory
+
+# Local Netlify folder
+.netlify

@@ -5,7 +5,7 @@
   "homepage": "https://github.com/yandeu/phaser-project-template-es6#readme",
   "main": "src/game.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack/webpack.dev.js --open",
+    "start": "webpack-dev-server --config webpack/webpack.dev.js",
     "build": "webpack --mode production --config webpack/webpack.prod.js",
     "bundle": "npm run build"
   },

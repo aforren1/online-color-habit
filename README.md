@@ -1,8 +1,12 @@
+https://actlab-colorific.netlify.app
+
 # Setup
 
 1. Install npm
 2. `npm install` (& go do something else...)
 3. `netlify login`
+4. Make a remote github repo
+5. `netlify init` & follow prompts
 
 # Notes
 
