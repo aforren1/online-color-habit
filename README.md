@@ -70,26 +70,24 @@ color timed response (just square moving down center, gray to color)
 ---
 
 [day 1]
-25 free RT per finger [baseline free RT measure?]
-5 consecutive criterion for single forced RT finger [familiarization with forced RT]
-250 forced RT per finger [baseline for finger-specific performance]
-25 free RT per color (4 colors) [light intro to all key/finger mappings]
-spaced #1 (250 per color, 2 colors)
+20 free RT per finger [baseline free RT measure?]
+8 consecutive criterion for single forced RT finger [familiarization with forced RT]
+spaced #1 (200 per color, 2 colors)
 
 [day 2]
-spaced #2 (250 per color, 2 colors)
+spaced #2 (200 per color, 2 colors)
 [day 3]
-spaced #3 (250 per color, 2 colors)
+spaced #3 (200 per color, 2 colors)
 [day 4]
-spaced #4 (250 per color, 2 colors)
+spaced #4 (200 per color, 2 colors)
 
 [day 5]
+spaced #5 (200 per color, 2 colors)
 massed #1 (1000 per color, 2 colors)
-5 free RT per color (4 colors) [light warmup block]
+short reminder of forced RT (20 trials?)
 250 forced RT per color (4 colors) [perf improvement after N days]
 25 free RT per color (4 colors, remapped) [light intro to remapping]
 250 forced RT per color (4 colors, remapped) [get the critical habit data]
-(non-color forced RT needed at some point this day? nice for general motor improvement??)
 
 ## 250 forced RT per finger
 

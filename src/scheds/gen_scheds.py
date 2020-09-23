@@ -140,6 +140,40 @@ def make_tr_vals(rng, intro=2, t_min=0.05, t_max=0.9):
     return kys, pts
 
 
+# make debug
+# add days to test specific things
+cp = make_freert()
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+debug['days']['1'].append(cp)  # day1: finger freeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'practice'
+cp['trial_order'] = ['h'] * 10
+cp['prep_times'] = [0] * 10
+debug['days']['2'].append(cp)  # day2: practice forcedRT
+cp = make_freert()
+cp['stim_type'] = 'color'
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+debug['days']['3'].append(cp)  # day3: color freeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'color'
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+cp['prep_times'] = [0.5] * 4
+debug['days']['4'].append(cp)  # day4: color forcedRT
+
+cp = make_freert()
+cp['stim_type'] = 'color'
+cp['swap'] = 1
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+debug['days']['5'].append(cp)  # day5: color freeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'color'
+cp['swap'] = 1
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+cp['prep_times'] = [0.5] * 4
+debug['days']['6'] = []
+debug['days']['6'].append(cp)  # day6: color forcedRT
+
+
 groups = {'1': group1, '2': group2, '3': group3}
 for count, g_key in enumerate(groups):
     group = groups[g_key]
@@ -149,31 +183,19 @@ for count, g_key in enumerate(groups):
     day1 = group['days']['1']
     # 20 free RT per finger (baseline free RT measure?)
     cp = make_freert()
-    cp['trial_order'] = make_key_seq(
-        rng, repeat_per_finger=20, key_subset=keys)
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=20,
+                                     key_subset=keys)
     day1.append(cp)
-    # 5 consecutive criterion for single forced RT finger (forced RT familiarization)
+    # 8 consecutive criterion for single forced RT finger (forced RT familiarization)
     cp = make_forcedrt()
     cp['stim_type'] = 'practice'
     cp['trial_order'] = ['h'] * 100  # if they exceed, just keep going...
     cp['prep_times'] = [0] * 100
     day1.append(cp)
-    # 250 forced RT per finger (baseline for finger-specific performance) (TODO: necessary?)
-    cp = make_forcedrt()
-    cp['stim_type'] = 'finger'
-    cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2,
-                                                       t_min=0.05, t_max=0.9)
-    day1.append(cp)
-    # 25 free RT per color (light intro to all key/finger mappings)
-    cp = make_freert()
-    cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(
-        rng, repeat_per_finger=25, key_subset=keys)
-    day1.append(cp)
     # spaced 1
     cp = make_freert()
     cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=250,
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
                                      key_subset=group['spaced'])
     day1.append(cp)
     # **day 2**
@@ -181,7 +203,7 @@ for count, g_key in enumerate(groups):
     day2 = group['days']['2']
     cp = make_freert()
     cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=250,
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
                                      key_subset=group['spaced'])
     day2.append(cp)
     # **day 3**
@@ -189,7 +211,7 @@ for count, g_key in enumerate(groups):
     day3 = group['days']['3']
     cp = make_freert()
     cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=250,
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
                                      key_subset=group['spaced'])
     day3.append(cp)
     # **day 4**
@@ -197,22 +219,29 @@ for count, g_key in enumerate(groups):
     day4 = group['days']['4']
     cp = make_freert()
     cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=250,
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
                                      key_subset=group['spaced'])
     day4.append(cp)
     # **day 5**
     day5 = group['days']['5']
+    # spaced 5
+    cp = make_freert()
+    cp['stim_type'] = 'color'
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
+                                     key_subset=group['spaced'])
+    day5.append(cp)
     # massed 1
     cp = make_freert()
     cp['stim_type'] = 'color'
     cp['trial_order'] = make_key_seq(rng, repeat_per_finger=1000,
                                      key_subset=group['massed'])
     day5.append(cp)
-    # light reminder of everything
-    cp = make_freert()
-    cp['stim_type'] = 'color'
-    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=5, key_subset=keys)
-    day5.append(cp)
+    # reminder of timed response (non-criterion)
+    cp = make_forcedrt()
+    cp['stim_type'] = 'practice'
+    cp['trial_order'] = ['h'] * 30
+    cp['prep_times'] = [0] * 30
+    day1.append(cp)
     # 250 forced RT per finger (how much better now?)
     cp = make_forcedrt()
     cp['stim_type'] = 'color'
@@ -223,8 +252,8 @@ for count, g_key in enumerate(groups):
     cp = make_freert()
     cp['stim_type'] = 'color'
     cp['swap'] = 1
-    cp['trial_order'] = make_key_seq(
-        rng, repeat_per_finger=25, key_subset=keys)
+    cp['trial_order'] = make_key_seq(rng, repeat_per_finger=25,
+                                     key_subset=keys)
     day5.append(cp)
     # 250 forced RT per finger (swapped) (now's the habit)
     cp = make_forcedrt()
@@ -234,6 +263,14 @@ for count, g_key in enumerate(groups):
                                                        t_min=0.05, t_max=0.9)
     day5.append(cp)
 
+# add debug group for testing
+groups['debug'] = debug
 
 with open('sched.json', 'w') as f:
-    json.dump(groups, f, separators=(',', ':'))
+    # these consternations let us specify the number of decimal
+    # places for floats (which helps to cut the file size in half)
+    json.dump(
+        json.loads(json.dumps(groups),
+                   parse_float=lambda x: round(float(x), 5)), f,
+        separators=(',', ':')
+    )

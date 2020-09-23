@@ -115,6 +115,9 @@ var ts = function (time) {
   this.frame++
 }
 Core.TimeStep.prototype.step = ts
+Core.TimeStep.prototype.tick = function () {
+  this.step(window.performance.now())
+}
 
 var Phaser = {
   Actions: require('../../node_modules/phaser/src/actions'),
