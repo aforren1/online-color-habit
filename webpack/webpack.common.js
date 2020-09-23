@@ -34,6 +34,7 @@ module.exports = {
       patterns: [
         { from: 'src/assets', to: 'assets' },
         { from: 'src/icons/', to: 'icons' },
+        { from: 'src/scheds/*.json', to: 'scheds' },
       ],
     }),
     new webpack.DefinePlugin({

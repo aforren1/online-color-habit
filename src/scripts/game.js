@@ -13,7 +13,7 @@ import TitleScene from './scenes/titleScene'
 
 // let small_dim = Math.min(screen.width, screen.height)
 let small_dim = 800 // nothing's going to be perfectly scaled, but that's fine?
-const config = {
+const phaser_config = {
   type: Phaser.AUTO,
   backgroundColor: '#222222',
   scale: {
@@ -49,66 +49,57 @@ const config = {
     ],
   },
 }
-var id = 0
+
 window.addEventListener('load', () => {
-  // all these should have extra listeners added in the "real" game,
-  // so that we can handle comm errors more gracefully (e.g. kick to
-  // a "waiting for response" state)
-  // ha, one issue-- how do we **get** these messages if the connection
-  // fails for good?
-
-  const game = new Phaser.Game(config)
+  const game = new Phaser.Game(phaser_config)
   log.info('Phaser loaded.')
-  let conf = game.config
-  let rt = 'webgl'
-  if (conf.renderType === Phaser.CANVAS) {
-    rt = 'canvas'
-  }
-  let res = new UAParser().getResult()
   // TODO: figure out prolific/mturk/elsewhere here (URL parsing)
-
-  let firstVisit = true
-  if (localStorage.getItem('returning') !== null) {
-    firstVisit = false
-  }
-  let visitTimes = localStorage.getItem('visit_times')
-  if (visitTimes === null) {
-    visitTimes = [new Date()]
-  } else {
-    visitTimes = JSON.parse(visitTimes)
-    visitTimes.push(new Date())
-  }
-  localStorage.setItem('visit_times', JSON.stringify(visitTimes))
-  localStorage.setItem('returning', 'y')
-  let exitTimes = localStorage.getItem('exit_times')
-  if (exitTimes !== null) {
-    exitTimes = JSON.parse(exitTimes)
-  }
+  // Remember that localStorage *only stores strings*
   const url_params = new URL(window.location.href).searchParams
+  // add flag to clear localStorage
+  if (url_params.get('clear') !== null) {
+    localStorage.clear()
+  }
   // If coming from prolific, use that ID. Otherwise, generate some random chars
-  // localStorage['returning'] should be used to determine if repeat taker
-  const randomString = (length) => [...Array(length)].map(() => (~~(Math.random() * 36)).toString(36)).join('')
-  id = url_params.get('PROLIFIC_PID') || randomString(10)
-  // TODO: pass id and socket as separate data, not patched into game!
-  game.id = id
+  let id = localStorage['id']
+  if (typeof id === 'undefined') {
+    const randomString = (length) => [...Array(length)].map(() => (~~(Math.random() * 36)).toString(36)).join('')
+    id = url_params.get('PROLIFIC_PID') || url_params.get('id') || randomString(10)
+    localStorage['id'] = id
+    // TODO: assert prolific ID matches one in localStorage
+  }
+
+  let day = url_params.get('day') || localStorage['day'] // if exists, should be 2+
+  if (typeof day === 'undefined') {
+    day = '1'
+    localStorage['day'] = day
+  }
+
+  let group = localStorage['group']
+  if (typeof group === 'undefined') {
+    // assign group (either in URL or randomly) 1-3 (or 1-N, change the "3")
+    let group = (url_params.get('group') || Math.floor(Math.random() * 3) + 1).toString()
+    localStorage['group'] = group
+  }
+
   let user_config = {
-    // if not on prolific, might be all null
     id: id,
+    // if not on prolific, might be all null
     prolific_config: {
       prolific_pid: url_params.get('PROLIFIC_PID'),
       study_id: url_params.get('STUDY_ID'),
       session_id: url_params.get('SESSION_ID'),
     },
-    width: conf.width,
-    height: conf.height,
-    renderer: rt,
-    user_agent: res,
-    first_visit: firstVisit,
-    start_date: visitTimes.slice(-1)[0],
-    start_dates: visitTimes,
-    exit_dates: exitTimes,
-    fullscreen_supported: document.fullscreenEnabled, // this is pretty critical for us?
+    width: game.config.width,
+    height: game.config.height,
+    renderer: game.config.renderType === Phaser.CANVAS ? 'canvas' : 'webgl',
+    user_agent: new UAParser().getResult(),
+    fullscreen_supported: document.fullscreenEnabled, // this is pretty important for us?
+    day: day,
+    group: group,
+    debug: url_params.get('debug') !== null, // if debug !== null, use flashing square
   }
+  game.user_config = user_config // patch in to pass into game
   // set up for user
   log.info('Exiting initialization.')
 })
@@ -128,17 +119,7 @@ export function onBeforeUnload(event) {
 // if prematurely ended, shuffle logs away?
 // we'll at least store a local time to get an idea if they're
 // refreshing
-window.addEventListener('unload', (event) => {
-  let store = window.localStorage
-  let exits = store.getItem('exit_times')
-  if (exits === null) {
-    exits = [new Date()]
-  } else {
-    exits = JSON.parse(exits)
-    exits.push(new Date())
-  }
-  store.setItem('exit_times', JSON.stringify(exits))
-})
+window.addEventListener('unload', (event) => {})
 
 // breaks on IE, so dump if that's really a big deal
 // Might be able to polyfill our way out, too?

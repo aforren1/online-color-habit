@@ -99,4 +99,18 @@ http://davidjohnstone.net/pages/lch-lab-colour-gradient-picker#ff007d,bd5e00,009
 
 '#ff007d', '#bd5e00', '#009800', '#00a0ff' (neutral/gray is '#777777')
 
-background: '#222222'
+background: '#222222' (set in game.js)
+
+## params
+
+PROLIFIC_PID/id
+day: '1' through '5'
+group: '1', '2', '3'
+debug: just define if needed (no specific val checked)
+
+## more
+
+One pre-generated JSON file per group describing all 5 days
+
+'freeRT': finger/color, original/remapped
+'forcedRT': practice/finger/color, original/remapped

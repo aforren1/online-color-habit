@@ -1,4 +1,5 @@
 import log from '../utils/logger'
+import scheds from '../../scheds/sched.json'
 
 export default class TitleScene extends Phaser.Scene {
   constructor() {
@@ -10,6 +11,7 @@ export default class TitleScene extends Phaser.Scene {
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json')
   }
   create() {
+    console.log(scheds['1']['action_color_map'])
     let height = this.game.config.height
     let center = height / 2
     // little icon in the corner indicating audio is used, but optional
@@ -47,6 +49,18 @@ export default class TitleScene extends Phaser.Scene {
         this.counter %= 4
       },
     })
+
+    this.add
+      .text(center, center, `Day ${this.game.user_config.day}/5`, {
+        fontFamily: 'Verdana',
+        fontSize: 50,
+        color: '#dddddd',
+        stroke: '#444444',
+        strokeThickness: 6,
+        align: 'center',
+      })
+      .setOrigin(0.5, 0.5)
+
     let txt = this.add
       .text(center, center + 300, 'Press [enter] to start.', {
         fontFamily: 'Verdana',
@@ -97,6 +111,7 @@ export default class TitleScene extends Phaser.Scene {
     }
     let enter_key = this.input.keyboard.addKey('ENTER')
     enter_key.once('down', cb)
+    console.log(this.game.user_config)
   }
 
   update() {
