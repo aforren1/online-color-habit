@@ -80,7 +80,7 @@ window.addEventListener('load', () => {
   let group = localStorage['group']
   if (typeof group === 'undefined') {
     // assign group (either in URL or randomly) 1-3 (or 1-N, change the "3")
-    let group = (url_params.get('group') || Math.floor(Math.random() * 3) + 1).toString()
+    group = (url_params.get('group') || Math.floor(Math.random() * 3) + 1).toString()
     localStorage['group'] = group
   }
 

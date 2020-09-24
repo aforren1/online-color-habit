@@ -116,8 +116,10 @@ def make_key_seq(rng, repeat_per_finger=20, key_subset=None):
 
 
 def mk_single_tr(k, t_min, t_max):
-    out = np.empty(250, dtype=[('pt', 'f8'), ('key', '<U1')])
-    out['pt'] = np.linspace(t_min, t_max, 25).repeat(10)
+    # TODO: fancier generation (5 chunks of 100, so we can
+    # do cross-block comparisons more easily)
+    out = np.empty(125, dtype=[('pt', 'f8'), ('key', '<U1')])
+    out['pt'] = np.linspace(t_min, t_max, 25).repeat(5)
     out['key'] = k
     return out
 
@@ -242,7 +244,7 @@ for count, g_key in enumerate(groups):
     cp['trial_order'] = ['h'] * 30
     cp['prep_times'] = [0] * 30
     day5.append(cp)
-    # 250 forced RT per finger (how much better now?)
+    # 125 forced RT per finger (how much better now?)
     cp = make_forcedrt()
     cp['stim_type'] = 'color'
     cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2,
@@ -255,7 +257,7 @@ for count, g_key in enumerate(groups):
     cp['trial_order'] = make_key_seq(rng, repeat_per_finger=25,
                                      key_subset=keys)
     day5.append(cp)
-    # 250 forced RT per finger (swapped) (now's the habit)
+    # 125 forced RT per finger (swapped) (now's the habit)
     cp = make_forcedrt()
     cp['stim_type'] = 'color'
     cp['swap'] = 1

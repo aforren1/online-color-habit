@@ -1,3 +1,6 @@
+// gist of this free RT task: show instruction screen (static, maybe flashing text)
+// When [enter] to start, unveil the playing arena and do 3-2-1-start
+// show stim immediately. if good, 300ms feedback & onward. if wrong, 1s feedback and repeat
 export default class FreeRT extends Phaser.Scene {
   constructor() {
     super({ key: 'FreeRT' })

@@ -112,3 +112,5 @@ One pre-generated JSON file per group describing all 5 days
 
 'freeRT': finger/color, original/remapped
 'forcedRT': practice/finger/color, original/remapped
+
+Testing URLs, e.g. ?clear&day=4&group=2
