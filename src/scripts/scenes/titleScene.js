@@ -11,7 +11,6 @@ export default class TitleScene extends Phaser.Scene {
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json')
   }
   create() {
-    console.log(scheds['1']['action_color_map'])
     let height = this.game.config.height
     let center = height / 2
     // little icon in the corner indicating audio is used, but optional
@@ -95,8 +94,8 @@ export default class TitleScene extends Phaser.Scene {
         }, 1000)
       })
       this.scale.startFullscreen() // todo: warn folks
-      log.info(`RAF: ${this.game.loop.time}`)
-      log.info('Starting instruction scene.')
+      log.info(`RAF: ${this.game.loop.now}`)
+      log.info('Starting next scene.')
       txt.removeInteractive()
       this.tweens.addCounter({
         from: 255,
@@ -106,7 +105,22 @@ export default class TitleScene extends Phaser.Scene {
           let v = Math.floor(t.getValue())
           this.cameras.main.setAlpha(v / 255)
         },
-        onComplete: () => this.scene.start('InstructionScene'),
+        onComplete: () => {
+          // extract group, day schedule
+          let conf = this.game.user_config
+          let group = conf.group
+          let day = conf.day
+          let grp_config = scheds[group]
+          // put together a new obj with 2 things we need-- day sched & act-col map
+          let today_config = {
+            map: grp_config['action_color_map'],
+            day_sched: grp_config.days[day],
+          }
+          // other scenes should use the same pattern, except
+          // to `.shift()` the today_config.day_sched, and if undefined,
+          // send to the exit scene
+          this.scene.start(today_config.day_sched[0].task, today_config)
+        },
       })
     }
     let enter_key = this.input.keyboard.addKey('ENTER')

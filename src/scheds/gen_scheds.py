@@ -88,7 +88,7 @@ debug = {
 
 def make_freert():
     return {
-        'task': 'freeRT',
+        'task': 'FreeRT',
         'stim_type': 'finger',  # finger/color
         'swap': 0,
         'trial_order': [],  # list of keys
@@ -97,7 +97,7 @@ def make_freert():
 
 def make_forcedrt():
     return {
-        'task': 'forcedRT',
+        'task': 'ForcedRT',
         'stim_type': 'finger',  # practice/finger/color
         'swap': 0,
         'trial_order': [],  # list of keys
@@ -144,34 +144,34 @@ def make_tr_vals(rng, intro=2, t_min=0.05, t_max=0.9):
 # add days to test specific things
 cp = make_freert()
 cp['trial_order'] = ['h', 'u', 'i', 'l']
-debug['days']['1'].append(cp)  # day1: finger freeRT
+debug['days']['1'].append(cp)  # day1: finger FreeRT
 cp = make_forcedrt()
 cp['stim_type'] = 'practice'
 cp['trial_order'] = ['h'] * 10
 cp['prep_times'] = [0] * 10
-debug['days']['2'].append(cp)  # day2: practice forcedRT
+debug['days']['2'].append(cp)  # day2: practice ForcedRT
 cp = make_freert()
 cp['stim_type'] = 'color'
 cp['trial_order'] = ['h', 'u', 'i', 'l']
-debug['days']['3'].append(cp)  # day3: color freeRT
+debug['days']['3'].append(cp)  # day3: color FreeRT
 cp = make_forcedrt()
 cp['stim_type'] = 'color'
 cp['trial_order'] = ['h', 'u', 'i', 'l']
 cp['prep_times'] = [0.5] * 4
-debug['days']['4'].append(cp)  # day4: color forcedRT
+debug['days']['4'].append(cp)  # day4: color ForcedRT
 
 cp = make_freert()
 cp['stim_type'] = 'color'
 cp['swap'] = 1
 cp['trial_order'] = ['h', 'u', 'i', 'l']
-debug['days']['5'].append(cp)  # day5: color freeRT
+debug['days']['5'].append(cp)  # day5: color FreeRT
 cp = make_forcedrt()
 cp['stim_type'] = 'color'
 cp['swap'] = 1
 cp['trial_order'] = ['h', 'u', 'i', 'l']
 cp['prep_times'] = [0.5] * 4
 debug['days']['6'] = []
-debug['days']['6'].append(cp)  # day6: color forcedRT
+debug['days']['6'].append(cp)  # day6: color ForcedRT
 
 
 groups = {'1': group1, '2': group2, '3': group3}
@@ -241,7 +241,7 @@ for count, g_key in enumerate(groups):
     cp['stim_type'] = 'practice'
     cp['trial_order'] = ['h'] * 30
     cp['prep_times'] = [0] * 30
-    day1.append(cp)
+    day5.append(cp)
     # 250 forced RT per finger (how much better now?)
     cp = make_forcedrt()
     cp['stim_type'] = 'color'

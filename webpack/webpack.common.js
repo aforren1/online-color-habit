@@ -29,7 +29,7 @@ module.exports = {
     },
   },
   plugins: [
-    new HtmlWebpackPlugin({ gameName: 'ACT Web Template', template: 'src/index.html' }),
+    new HtmlWebpackPlugin({ gameName: 'Colorific!', template: 'src/index.html' }),
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/assets', to: 'assets' },
