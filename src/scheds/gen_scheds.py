@@ -225,8 +225,8 @@ for count, g_key in enumerate(groups):
     # 8 consecutive criterion for single forced RT finger (forced RT familiarization)
     cp = make_forcedrt()
     cp['stim_type'] = 'practice'
-    cp['trial_order'] = ['h'] * 100  # if they exceed, just keep going...
-    cp['prep_times'] = [0] * 100
+    cp['trial_order'] = ['h'] * 80  # if they exceed, just keep going...
+    cp['prep_times'] = [0] * 80
     day1.append(cp)
     # spaced 1
     cp = make_freert()

@@ -14,8 +14,12 @@ const states = Enum([
 ])
 
 const texts = {
-  practice: ['Practice timing'],
-  color: ['practice color.'],
+  practice: [
+    'In this [color=red]Forced Response[/color] section, we are going to practice timing in a different task. Press the [color=yellow]H[/color] key when the square intersects with the line running along the bottom of the screen. You will only need to use the [color=yellow]H[/color] key in this task.',
+  ],
+  color: [
+    'In this [color=red]Forced Response[/color] section, we will test how well you know the color-key combinations. The square will travel down the screen, and change to one of the four colors at some point during movement. Press the key corresponding to that color when the square intersects with the line. [i]Some may be very difficult, but do not be afraid of guessing![/i] Always try to get the timing correct, and make a response every trial.',
+  ],
 }
 // assume display is always 800 px (which it should be, we always fix it)
 //
@@ -74,10 +78,10 @@ export default class ForcedRT extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
     this.instruct_text = TypingText(this, center, center, '', {
       fontFamily: 'Verdana',
-      fontSize: 30,
+      fontSize: 20,
       wrap: {
         mode: 'word',
-        width: 400,
+        width: 500,
       },
     }).setOrigin(0.5, 0.5)
     this.instruct_text.visible = false
@@ -382,18 +386,20 @@ export default class ForcedRT extends Phaser.Scene {
             this.target.visible = false
           }
           this.tl.stop()
+          this.target.y = target_start + speed * (press_time - 250 - 400)
           this.time.delayedCall(300, () => {
             this.target.setFillStyle(0x777777)
             this.correctness.feedback(null)
           })
           this.time.delayedCall(500, () => {
+            // TODO: add criterion
             this.target.visible = false
             this.trial_counter++
             if (this.trial_counter >= this.task_config.trial_order.length) {
               // exit
               this.state = states.END_SECTION
               this.locked = true
-            } else if (this.trial_counter % 5 == 0) {
+            } else if (this.trial_counter % 100 == 0) {
               this.state = states.TAKE_A_BREAK
               this.locked = true
             }

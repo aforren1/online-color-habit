@@ -17,14 +17,14 @@ const states = Enum([
   'TAKE_A_BREAK', // min 15s wait, show completion time feedback? and wait for huil to continue
   'END_SECTION', // pretty much like TAKE_A_BREAK, but more final
 ])
+const basic_txt =
+  "In this [color=yellow]Free Response[/color] section, you'll become familiar with the the training task. Each of the squares in the center of the screen corresponds directly to the [color=yellow]H, U, I, and L[/color] keys. When one square flashes, press the corresponding key as quickly as possible."
 const prac_txt =
-  "In this section, you'll practice some of the color-key combinations. Try to respond as quickly and correctly as possible."
-const mass_txt =
-  "In this section, you'll practice [b][color=red]two more[/b][/color] color-key combinations. Try to respond as quickly and correctly as possible."
+  "In this [color=yellow]Free Response[/color] section, you'll start or continue to learn which [color=yellow]color[/color] corresponds to which [color=yellow]computer key[/color]. Using your right hand, select one of the four keys when the square flashes a new color. Try to respond as quickly and correctly as possible."
 const remap_txt =
   'Now, we have switched some of the color-key relationships. This section will make you familiar with those changes. [b]take your time[/b], correctness is most important here.'
 const texts = {
-  finger: ['This section will help you to become familiar with one of the tasks.'],
+  finger: [basic_txt],
   color: [prac_txt, remap_txt],
 }
 
@@ -69,10 +69,10 @@ export default class FreeRT extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
     this.instruct_text = TypingText(this, center, center, '', {
       fontFamily: 'Verdana',
-      fontSize: 30,
+      fontSize: 20,
       wrap: {
         mode: 'word',
-        width: 400,
+        width: 500,
       },
     }).setOrigin(0.5, 0.5)
     this.instruct_text.visible = false
@@ -305,7 +305,7 @@ export default class FreeRT extends Phaser.Scene {
                 // exit
                 this.state = states.END_SECTION
                 this.locked = true
-              } else if (this.trial_counter % 5 == 0) {
+              } else if (this.trial_counter % 100 == 0) {
                 this.state = states.TAKE_A_BREAK
                 this.locked = true
               }
