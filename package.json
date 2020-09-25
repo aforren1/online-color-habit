@@ -58,6 +58,7 @@
     "es6-promise": "^4.2.8",
     "express": "^4.17.1",
     "googleapis": "^57.0.0",
+    "isomorphic-fetch": "^3.0.0",
     "loglevel": "^1.6.8",
     "mailgun-js": "github:highlycaffeinated/mailgun-js",
     "netlify-cli": "^2.63.3",

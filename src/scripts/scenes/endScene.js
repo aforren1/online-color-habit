@@ -1,3 +1,4 @@
+import postData from '../utils/postdata'
 // a nice message, a summary, increment the day counter
 export default class EndScene extends Phaser.Scene {
   constructor() {
@@ -25,6 +26,14 @@ export default class EndScene extends Phaser.Scene {
       .setOrigin(0.5, 0.5)
 
     console.log('Data today:')
-    console.log({ config: this.game.user_config, data: today_data })
+    let alldata = { config: this.game.user_config, data: today_data }
+    console.log(alldata)
+
+    Promise.all(postData(alldata)).then((values) => {
+      if (values[0] !== 500 || values[1] !== 500) {
+      } else {
+        log.error('Forwarding failed HARD')
+      }
+    })
   }
 }

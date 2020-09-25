@@ -386,6 +386,7 @@ export default class ForcedRT extends Phaser.Scene {
             this.target.visible = false
           }
           this.tl.stop()
+          // interpolate to the "real" position
           this.target.y = target_start + speed * (press_time - 250 - 400)
           this.time.delayedCall(300, () => {
             this.target.setFillStyle(0x777777)
