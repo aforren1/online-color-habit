@@ -57,8 +57,6 @@ export default class ForcedRT extends Phaser.Scene {
     this.task_data.responses = []
     this.today_data = today_data // all of the data for today
     this.today_data.push(this.task_data)
-    console.log(this.conf)
-    console.log(this.task_data)
     // now task_config has everything we need for this section
     // .stim_type, .swap, .trial_order, (.prep_times for timed response)
     this.correctness = new CorrectFeedback(this, center, center, 1)

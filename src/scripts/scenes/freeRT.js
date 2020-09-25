@@ -50,7 +50,6 @@ export default class FreeRT extends Phaser.Scene {
     this.task_data.map = today_config.map
     this.today_data = today_data // all of the data for today
     this.today_data.push(this.task_data)
-    console.log(this.task_data)
     // now task_config has everything we need for this section
     // .stim_type, .swap, .trial_order, (.prep_times for timed response)
     this.correctness = new CorrectFeedback(this, center, center, 1)
@@ -292,7 +291,6 @@ export default class FreeRT extends Phaser.Scene {
               trial_start_time: this.trial_start,
               tries: this.tries,
             })
-            console.log(this.task_data)
             this.correctness.feedback(1)
             this.time.delayedCall(300, () => {
               this.intro_target.clear()

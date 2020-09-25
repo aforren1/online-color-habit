@@ -13,6 +13,7 @@ import TitleScene from './scenes/titleScene'
 import FreeRT from './scenes/freeRT'
 import ForcedRT from './scenes/forcedRT'
 import EndScene from './scenes/endScene'
+import scheds from '../scheds/sched.json'
 
 // let small_dim = Math.min(screen.width, screen.height)
 let small_dim = 800 // nothing's going to be perfectly scaled, but that's fine?
@@ -82,8 +83,10 @@ window.addEventListener('load', () => {
 
   let group = localStorage['group']
   if (typeof group === 'undefined') {
-    // assign group (either in URL or randomly) 1-3 (or 1-N, change the "3")
-    group = (url_params.get('group') || Math.floor(Math.random() * 3) + 1).toString()
+    // assign group (either in URL or randomly) 1-N
+    // note we lop of the -1, because the last element is the test one
+    let group_count = Object.keys(scheds).length - 1
+    group = (url_params.get('group') || Math.floor(Math.random() * group_count) + 1).toString()
     localStorage['group'] = group
   }
 
