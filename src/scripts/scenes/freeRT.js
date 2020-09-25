@@ -24,13 +24,8 @@ const mass_txt =
 const remap_txt =
   'Now, we have switched some of the color-key relationships. This section will make you familiar with those changes. [b]take your time[/b], correctness is most important here.'
 const texts = {
-  finger: { 1: 'This section will help you to become familiar with one of the tasks.' },
-  color: {
-    1: "Next, you'll learn the association between color & computer key.",
-    2: prac_txt,
-    3: prac_txt,
-    4: prac_txt,
-  },
+  finger: ['This section will help you to become familiar with one of the tasks.'],
+  color: [prac_txt, remap_txt],
 }
 
 export default class FreeRT extends Phaser.Scene {
@@ -156,7 +151,9 @@ export default class FreeRT extends Phaser.Scene {
         if (this.entering) {
           this.entering = false
           this.instruct_text.visible = true
-          this.instruct_text.start(mass_txt, 10)
+          //
+          let inst_txt = texts[this.task_config.stim_type][this.task_config.swap]
+          this.instruct_text.start(inst_txt, 10)
           this.instruct_text.typing.once('complete', () => {
             this.any_start.visible = true
             this.input.keyboard.once('keydown', (evt) => {
@@ -368,6 +365,7 @@ export default class FreeRT extends Phaser.Scene {
           this.target.visible = false
           this.intro_target.visible = false
           this.emitter.visible = true
+          this.kf.visible = false
           this.time.delayedCall(5000, () => {
             if (this.conf.day_sched.length === 0) {
               console.log('Done! Redirect to end...')
