@@ -118,8 +118,10 @@ def make_key_seq(rng, repeat_per_finger=20, key_subset=None):
 def mk_single_tr(k, t_min, t_max):
     # TODO: fancier generation (5 chunks of 100, so we can
     # do cross-block comparisons more easily)
-    out = np.empty(125, dtype=[('pt', 'f8'), ('key', '<U1')])
-    out['pt'] = np.linspace(t_min, t_max, 25).repeat(5)
+    # TODO: Maybe more than 125 per finger?
+    out = np.empty(175, dtype=[('pt', 'f8'), ('key', '<U1')])
+    # spaced every 2 frames, going from 0.05 to 0.85
+    out['pt'] = (2/60 * np.arange(0, 25, 1) + 0.05).repeat(7)
     out['key'] = k
     return out
 
@@ -247,8 +249,7 @@ for count, g_key in enumerate(groups):
     # 125 forced RT per finger (how much better now?)
     cp = make_forcedrt()
     cp['stim_type'] = 'color'
-    cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2,
-                                                       t_min=0.05, t_max=0.9)
+    cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2)
     day5.append(cp)
     # 25 free RT per color (swapped!) (TODO: shorter? most people got it in < 50 trials during criterion)
     cp = make_freert()
@@ -261,8 +262,7 @@ for count, g_key in enumerate(groups):
     cp = make_forcedrt()
     cp['stim_type'] = 'color'
     cp['swap'] = 1
-    cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2,
-                                                       t_min=0.05, t_max=0.9)
+    cp['trial_order'], cp['prep_times'] = make_tr_vals(rng, intro=2)
     day5.append(cp)
 
 # add debug group for testing

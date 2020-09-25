@@ -12,6 +12,7 @@ import BitmapZonePlugin from 'phaser3-rex-plugins/plugins/bitmapzone-plugin.js'
 import TitleScene from './scenes/titleScene'
 import FreeRT from './scenes/freeRT'
 import ForcedRT from './scenes/forcedRT'
+import EndScene from './scenes/endScene'
 
 // let small_dim = Math.min(screen.width, screen.height)
 let small_dim = 800 // nothing's going to be perfectly scaled, but that's fine?
@@ -25,7 +26,7 @@ const phaser_config = {
     width: small_dim,
     height: small_dim,
   },
-  scene: [TitleScene, FreeRT, ForcedRT],
+  scene: [TitleScene, FreeRT, ForcedRT, EndScene],
   plugins: {
     global: [
       {

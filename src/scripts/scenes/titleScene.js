@@ -1,6 +1,7 @@
 import log from '../utils/logger'
 import scheds from '../../scheds/sched.json'
-
+import KeyFeedback from '../objects/keys'
+// TODO: HUIL to start.
 export default class TitleScene extends Phaser.Scene {
   constructor() {
     super({ key: 'TitleScene' })
@@ -13,8 +14,11 @@ export default class TitleScene extends Phaser.Scene {
   create() {
     let height = this.game.config.height
     let center = height / 2
-    // little icon in the corner indicating audio is used, but optional
-    this.add.image(15, 5, 'optional_audio').setOrigin(0, 0).setScale(0.45, 0.45)
+    // // little icon in the corner indicating audio is used, but optional
+    // this.add
+    //   .image(height - 100, -10, 'optional_audio')
+    //   .setOrigin(0, 0)
+    //   .setScale(0.4, 0.4)
     let title = this.add
       .text(center, center - 200, 'Colorific!', {
         fontSize: 160,
@@ -60,8 +64,13 @@ export default class TitleScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0.5)
 
+    this.add.text(0, 0, `ID: ${this.game.user_config.id}`, {
+      fontFamily: 'Verdana',
+      fontSize: 12,
+    })
+
     let txt = this.add
-      .text(center, center + 300, 'Press [enter] to start.', {
+      .text(center, center + 300, 'Hold the H-U-I-L keys\nto start.', {
         fontFamily: 'Verdana',
         fontStyle: 'bold',
         fontSize: 60,
@@ -81,7 +90,24 @@ export default class TitleScene extends Phaser.Scene {
       yoyo: true,
     })
 
-    let cb = () => {
+    let kf = new KeyFeedback(this, center, center + 100, 1)
+    this.keyvals = { h: 0, u: 0, i: 0, l: 0 }
+    for (let key of ['H', 'U', 'I', 'L']) {
+      this.input.keyboard
+        .addKey(key)
+        .on('down', (evt) => {
+          let foo = evt.originalEvent.key
+          // timestamp is evt.originalEvent.timeStamp
+          kf.press(foo)
+          this.keyvals[foo] = 1
+        })
+        .on('up', (evt) => {
+          let foo = evt.originalEvent.key
+          this.keyvals[foo] = 0
+          kf.release(foo)
+        })
+    }
+    this.cb = () => {
       // https://supernapie.com/blog/hiding-the-mouse-in-a-ux-friendly-way/
       // we don't need the cursor, but we also don't need pointer lock or the like
       let canvas = this.sys.canvas
@@ -93,7 +119,7 @@ export default class TitleScene extends Phaser.Scene {
           canvas.style.cursor = 'none'
         }, 1000)
       })
-      this.scale.startFullscreen() // todo: warn folks
+      //this.scale.startFullscreen() // todo: warn folks
       log.info(`RAF: ${this.game.loop.now}`)
       log.info('Starting next scene.')
       txt.removeInteractive()
@@ -119,13 +145,13 @@ export default class TitleScene extends Phaser.Scene {
           // other scenes should use the same pattern, except
           // to `.shift()` the today_config.day_sched, and if undefined,
           // send to the exit scene
-          this.scene.start(today_config.day_sched[0].task, today_config)
+          this.scene.start(today_config.day_sched[0].task, { today_config: today_config, today_data: [] })
         },
       })
     }
-    let enter_key = this.input.keyboard.addKey('ENTER')
-    enter_key.once('down', cb)
+
     console.log(this.game.user_config)
+    this.trig = false
   }
 
   update() {
@@ -138,5 +164,10 @@ export default class TitleScene extends Phaser.Scene {
     let col = Phaser.Display.Color.Interpolate.ColorWithColor(ref, targ, 200, val)
     let foo = Phaser.Display.Color.GetColor(col.r, col.g, col.b)
     this.emitter.setTint(foo)
+
+    if (!this.trig && Object.values(this.keyvals).reduce((a, b) => a + b, 0) >= 4) {
+      this.trig = true
+      this.cb()
+    }
   }
 }
