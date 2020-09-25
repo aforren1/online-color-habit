@@ -1,4 +1,4 @@
-export default class KeyFeedback extends Phaser.GameObjects.Container {
+export class KeyFeedback extends Phaser.GameObjects.Container {
   constructor(scene, x, y, alpha) {
     let boxes = {
       h: scene.add.rectangle(-120, 0, 60, 60, 0xffffff).setStrokeStyle(4, 0xffffff),
@@ -25,5 +25,33 @@ export default class KeyFeedback extends Phaser.GameObjects.Container {
   }
   release(key) {
     this.boxes[key.toLowerCase()].isFilled = false
+  }
+}
+
+export class KeyStim extends Phaser.GameObjects.Container {
+  constructor(scene, x, y, alpha) {
+    let boxes = {
+      h: scene.add.rectangle(-120, 20, 60, 60, 0xffffff).setStrokeStyle(2, 0xffffff),
+      u: scene.add.rectangle(-40, -20, 60, 60, 0xffffff).setStrokeStyle(2, 0xffffff),
+      i: scene.add.rectangle(40, -20, 60, 60, 0xffffff).setStrokeStyle(2, 0xffffff),
+      l: scene.add.rectangle(120, 20, 60, 60, 0xffffff).setStrokeStyle(2, 0xffffff),
+    }
+    for (let prop in boxes) {
+      boxes[prop].isFilled = false
+    }
+    super(scene, x, y, [boxes.h, boxes.u, boxes.i, boxes.l])
+    this.alpha = alpha
+    scene.add.existing(this)
+    this.boxes = boxes
+  }
+
+  // fill in square corresponding
+  fill(key) {
+    this.boxes[key.toLowerCase()].isFilled = true
+  }
+  clear() {
+    for (let prop in this.boxes) {
+      this.boxes[prop].isFilled = false
+    }
   }
 }

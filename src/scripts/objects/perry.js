@@ -3,8 +3,8 @@
 export default class CorrectFeedback extends Phaser.GameObjects.Container {
   constructor(scene, x, y, alpha) {
     let extras = { fontFamily: 'Georgia', fontSize: 160, color: '#ffffff', align: 'center' }
-    let left = scene.add.text(-200, 0, '', extras).setOrigin(0.5, 0.5)
-    let right = scene.add.text(200, 0, '', extras).setOrigin(0.5, 0.5)
+    let left = scene.add.text(-300, 0, '', extras).setOrigin(0.5, 0.5)
+    let right = scene.add.text(300, 0, '', extras).setOrigin(0.5, 0.5)
     super(scene, x, y, [left, right])
     this.left = left
     this.right = right

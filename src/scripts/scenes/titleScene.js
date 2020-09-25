@@ -1,6 +1,6 @@
 import log from '../utils/logger'
 import scheds from '../../scheds/sched.json'
-import KeyFeedback from '../objects/keys'
+import { KeyFeedback } from '../objects/keys'
 // TODO: HUIL to start.
 export default class TitleScene extends Phaser.Scene {
   constructor() {
