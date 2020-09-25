@@ -1,14 +1,13 @@
 import log from '../utils/logger'
 import scheds from '../../scheds/sched.json'
 import { KeyFeedback } from '../objects/keys'
-// TODO: HUIL to start.
+
 export default class TitleScene extends Phaser.Scene {
   constructor() {
     super({ key: 'TitleScene' })
   }
   preload() {
     // load all assets
-    this.load.image('optional_audio', 'assets/optional_audio.png')
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json')
   }
   create() {
