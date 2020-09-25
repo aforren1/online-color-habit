@@ -47,6 +47,7 @@ export default class FreeRT extends Phaser.Scene {
     this.task_data = JSON.parse(JSON.stringify(this.task_config))
     this.task_data.start_time = JSON.stringify(new Date())
     this.task_data.responses = []
+    this.task_data.map = today_config.map
     this.today_data = today_data // all of the data for today
     this.today_data.push(this.task_data)
     console.log(this.task_data)
@@ -54,7 +55,6 @@ export default class FreeRT extends Phaser.Scene {
     // .stim_type, .swap, .trial_order, (.prep_times for timed response)
     this.correctness = new CorrectFeedback(this, center, center, 1)
     this.correctness.visible = false
-    // this.correctness.feedback(1/0)
 
     this.title = this.add
       .text(center, 120, 'Free Response', {
@@ -171,6 +171,7 @@ export default class FreeRT extends Phaser.Scene {
       case states.COUNTDOWN:
         if (this.entering) {
           this.entering = false
+          this.consider_these = []
           let tl = this.tweens.createTimeline()
           this.countdown.scale = 0.5
           this.countdown.visible = true
@@ -286,7 +287,7 @@ export default class FreeRT extends Phaser.Scene {
               correct: true,
               target: this.trial_key,
               key: this.consider_these[0].key,
-              timestamp: this.consider_these[0].timestamp,
+              press_time: this.consider_these[0].timestamp,
               trial: this.trial_counter,
               trial_start_time: this.trial_start,
               tries: this.tries,
@@ -316,7 +317,7 @@ export default class FreeRT extends Phaser.Scene {
               correct: false,
               target: this.trial_key,
               key: this.consider_these[0].key,
-              timestamp: this.consider_these[0].timestamp,
+              press_time: this.consider_these[0].timestamp,
               trial: this.trial_counter,
               trial_start_time: this.trial_start,
               tries: this.tries,
@@ -366,6 +367,7 @@ export default class FreeRT extends Phaser.Scene {
           this.intro_target.visible = false
           this.emitter.visible = true
           this.kf.visible = false
+          this.input.keyboard.removeAllKeys()
           this.time.delayedCall(5000, () => {
             if (this.conf.day_sched.length === 0) {
               console.log('Done! Redirect to end...')

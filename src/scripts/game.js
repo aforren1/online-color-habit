@@ -75,6 +75,8 @@ window.addEventListener('load', () => {
   let day = url_params.get('day') || localStorage['day'] // if exists, should be 2+
   if (typeof day === 'undefined') {
     day = '1'
+  }
+  if (typeof localStorage['day'] === 'undefined') {
     localStorage['day'] = day
   }
 

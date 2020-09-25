@@ -49,9 +49,11 @@ export default class ForcedRT extends Phaser.Scene {
     // copy the task data
     this.task_data = JSON.parse(JSON.stringify(this.task_config))
     this.task_data.start_time = JSON.stringify(new Date())
+    this.task_data.map = today_config.map
     this.task_data.responses = []
     this.today_data = today_data // all of the data for today
     this.today_data.push(this.task_data)
+    console.log(this.conf)
     console.log(this.task_data)
     // now task_config has everything we need for this section
     // .stim_type, .swap, .trial_order, (.prep_times for timed response)
@@ -149,6 +151,19 @@ export default class ForcedRT extends Phaser.Scene {
       },
     })
     this.emitter.visible = false
+
+    this.explosion = this.add.particles('flares', 'green').createEmitter({
+      x: center,
+      blendMode: 'ADD',
+      y: line_pos,
+      speed: { min: 100, max: 400 },
+      angle: { min: 0, max: 360 },
+      gravityY: 200,
+      alpha: { start: 1, end: 0 },
+      scale: { start: 0.1, end: 0.15 },
+      active: false,
+      delay: { min: 0, max: 100 },
+    })
   }
   update() {
     switch (this.state) {
@@ -177,6 +192,7 @@ export default class ForcedRT extends Phaser.Scene {
         if (this.entering) {
           this.entering = false
           this.target.visible = true
+          this.target.y = target_start
           this.line.visible = true
           let tl = this.tweens.createTimeline()
           this.countdown.scale = 0.5
@@ -301,7 +317,7 @@ export default class ForcedRT extends Phaser.Scene {
               // push a garbage
               this.consider_these.push({
                 key: null,
-                timestamp: null,
+                press_time: null,
                 type: null,
                 trial: this.trial_counter,
                 trial_start_time: this.trial_start,
@@ -351,13 +367,17 @@ export default class ForcedRT extends Phaser.Scene {
             good_timing: good_timing,
             target: this.trial_key,
             key: resp,
-            timestamp: press_time,
+            press_time: press_time, // should just call press_time
             trial: this.trial_counter,
             trial_start_time: this.trial_start,
             prep_time: this.prep_time,
+            actual_prep_time: press_time - 250 - 400 - t_max + this.prep_time,
           })
-          console.log(this.task_data)
           this.correctness.feedback(correct && good_timing)
+          if (correct && good_timing) {
+            this.explosion.active = true
+            this.explosion.explode(200)
+          }
           if (good_timing) {
             this.target.visible = false
           }
@@ -413,6 +433,7 @@ export default class ForcedRT extends Phaser.Scene {
           this.line.visible = false
           this.emitter.visible = true
           this.kf.visible = false
+          this.input.keyboard.removeAllKeys()
           this.time.delayedCall(5000, () => {
             if (this.conf.day_sched.length === 0) {
               console.log('Done! Redirect to end...')

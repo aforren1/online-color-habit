@@ -177,6 +177,38 @@ cp['prep_times'] = [0.5] * 4
 debug['days']['6'] = []
 debug['days']['6'].append(cp)  # day6: color ForcedRT
 
+debug['days']['7'] = []
+d7 = debug['days']['7']
+cp = make_freert()
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+d7.append(cp)  # day1: finger FreeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'practice'
+cp['trial_order'] = ['h'] * 10
+cp['prep_times'] = [0] * 10
+d7.append(cp)  # day2: practice ForcedRT
+cp = make_freert()
+cp['stim_type'] = 'color'
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+d7.append(cp)  # day3: color FreeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'color'
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+cp['prep_times'] = [0.5] * 4
+d7.append(cp)  # day4: color ForcedRT
+
+cp = make_freert()
+cp['stim_type'] = 'color'
+cp['swap'] = 1
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+d7.append(cp)  # day5: color FreeRT
+cp = make_forcedrt()
+cp['stim_type'] = 'color'
+cp['swap'] = 1
+cp['trial_order'] = ['h', 'u', 'i', 'l']
+cp['prep_times'] = [0.5] * 4
+d7.append(cp)
+
 
 groups = {'1': group1, '2': group2, '3': group3}
 for count, g_key in enumerate(groups):
