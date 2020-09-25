@@ -69,7 +69,7 @@ export default class TitleScene extends Phaser.Scene {
     })
 
     let txt = this.add
-      .text(center, center + 300, 'Hold the H-U-I-L keys\nto start.', {
+      .text(center, center + 300, 'Press any of H-U-I-L\nto start.', {
         fontFamily: 'Verdana',
         fontStyle: 'bold',
         fontSize: 60,
@@ -164,7 +164,7 @@ export default class TitleScene extends Phaser.Scene {
     let foo = Phaser.Display.Color.GetColor(col.r, col.g, col.b)
     this.emitter.setTint(foo)
 
-    if (!this.trig && Object.values(this.keyvals).reduce((a, b) => a + b, 0) >= 4) {
+    if (!this.trig && Object.values(this.keyvals).reduce((a, b) => a + b, 0) >= 1) {
       this.trig = true
       this.cb()
     }
