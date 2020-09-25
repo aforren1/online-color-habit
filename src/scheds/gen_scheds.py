@@ -1,6 +1,7 @@
 import json
 import numpy as np
 from numpy.random import default_rng
+from itertools import permutations as perm
 # gist:
 # free RT trial list is just list of keys, e.g. ['h', 'i', 'l', 'i', ...].
 # forced RT adds list of prep times, e.g. [0.4, 0.3, 0.2, 0.5, 0.5]
@@ -12,59 +13,39 @@ c1 = '#ff007d'
 c2 = '#bd5e00'
 c3 = '#009800'
 c4 = '#00a0ff'
-group1 = {
-    'action_color_map':  {'h': [c1, c2],
-                          'u': [c2, c1],
-                          'i': [c3, c3],
-                          'l': [c4, c4]
-                          },
-    'spaced': ['h', 'i'],
-    'massed': ['u', 'l'],
-    'swapped': ['h', 'u'],  # for documentation, not necessary in experiment
-    # lists of day-by-day sections
-    # (localStorage tracks day as stringified day, so we can index directly into this)
-    'days': {'1': [],
-             '2': [],
-             '3': [],
-             '4': [],
-             '5': []}
-}
 
-group2 = {
-    'action_color_map':  {'h': [c3, c4],
-                          'u': [c4, c3],
-                          'i': [c1, c1],
-                          'l': [c2, c2]
-                          },
-    'spaced': ['u', 'l'],
-    'massed': ['h', 'i'],
-    'swapped': ['h', 'u'],  # for documentation, not necessary in experiment
-    # lists of day-by-day sections
-    # (localStorage tracks day as stringified day, so we can index directly into this)
-    'days': {'1': [],
-             '2': [],
-             '3': [],
-             '4': [],
-             '5': []}
-}
+all_keys = 'huil'
+colors = [c1, c2, c3, c4]
+# first two are swapped, second two are not;
+# odd are spaced, even are massed
+perms = list(perm(all_keys))
+rng = default_rng(1)
+groups = {}
+for count, p in enumerate(perms):
+    swapped = [p[0], p[1]]
+    spaced = [p[0], p[2]]
+    massed = [p[1], p[3]]
+    # random 4 colors
+    x = colors.copy()
+    rng.shuffle(x)
+    col_dict = dict(zip(['h', 'u', 'i', 'l'], x))
+    action_color_map = {p[0]: [col_dict[p[0]], col_dict[p[1]]],
+                        p[1]: [col_dict[p[1]], col_dict[p[0]]],
+                        p[2]: [col_dict[p[2]], col_dict[p[2]]],
+                        p[3]: [col_dict[p[3]], col_dict[p[3]]]}
+    groups[str(count)] = {'action_color_map': action_color_map,
+                          'spaced': spaced,
+                          'massed': massed,
+                          'swapped': swapped,
+                          'days': {'1': [], '2': [], '3': [], '4': [], '5': []}}
 
-group3 = {
-    'action_color_map':  {'h': [c3, c3],
-                          'u': [c1, c4],
-                          'i': [c2, c2],
-                          'l': [c4, c1]
-                          },
-    'spaced': ['h', 'u'],
-    'massed': ['i', 'l'],
-    'swapped': ['u', 'l'],  # for documentation, not necessary in experiment
-    # lists of day-by-day sections
-    # (localStorage tracks day as stringified day, so we can index directly into this)
-    'days': {'1': [],
-             '2': [],
-             '3': [],
-             '4': [],
-             '5': []}
-}
+for g in groups:
+    tmp = groups[g]
+    print(
+        f"swapped: {tmp['swapped']}, massed: {tmp['massed']}, spaced: {tmp['spaced']}")
+
+for g in groups:
+    print(groups[g]['action_color_map'])
 
 # TODO: debug settings
 debug = {
@@ -210,7 +191,6 @@ cp['prep_times'] = [0.5] * 4
 d7.append(cp)
 
 
-groups = {'1': group1, '2': group2, '3': group3}
 for count, g_key in enumerate(groups):
     group = groups[g_key]
     # make RNG
@@ -231,6 +211,7 @@ for count, g_key in enumerate(groups):
     # spaced 1
     cp = make_freert()
     cp['stim_type'] = 'color'
+    print(group['spaced'])
     cp['trial_order'] = make_key_seq(rng, repeat_per_finger=200,
                                      key_subset=group['spaced'])
     day1.append(cp)
