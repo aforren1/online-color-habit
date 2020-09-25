@@ -285,6 +285,7 @@ export default class ForcedRT extends Phaser.Scene {
           this.consider_these = []
           this.entering = false
           this.target.visible = true
+          this.target.scaleY = 1.0
           let key = this.task_config.trial_order[this.trial_counter]
           let prep_time = this.task_config.prep_times[this.trial_counter] * 1000
           let vis_time = t_max - prep_time
