@@ -96,7 +96,7 @@ export default class FreeRT extends Phaser.Scene {
     this.kf = new KeyFeedback(this, center, height - 100, 1)
 
     this.target = this.add.rectangle(center, center, 100, 100).setStrokeStyle(2, 0xffffff)
-    this.target.visible = false // this.target.setFillStyle(0xAAAAAA)
+    this.target.visible = false
 
     this.intro_target = new KeyStim(this, center, center, 1)
     this.intro_target.visible = false
@@ -125,6 +125,30 @@ export default class FreeRT extends Phaser.Scene {
       })
       .setOrigin(0.5, 0.5)
     this.tab.visible = false
+
+    let end_of_section = this.add
+      .text(center, center, 'Good Job!', {
+        fontSize: 160,
+        fontFamily: 'Arial',
+        fontStyle: 'italic',
+      })
+      .setOrigin(0.5, 0.5)
+      .setVisible(false)
+    let bmz = this.plugins.get('rexBitmapZonePlugin').add(end_of_section)
+    let particles = this.add.particles('flares', 'green').setPosition(end_of_section.x, end_of_section.y)
+    this.emitter = particles.createEmitter({
+      blendMode: 'ADD',
+      scale: { start: 0.1, end: 0.15 },
+      alpha: { start: 1, end: 0 },
+      quantity: 15,
+      speed: 4,
+      gravityY: -40,
+      emitZone: {
+        type: 'random',
+        source: bmz,
+      },
+    })
+    this.emitter.visible = false
   }
   update() {
     switch (this.state) {
@@ -341,13 +365,21 @@ export default class FreeRT extends Phaser.Scene {
       case states.END_SECTION:
         if (this.entering) {
           this.entering = false
-          if (this.conf.day_sched.length === 0) {
-            console.log('Done! Redirect to end...')
-            this.scene.start('EndScene', this.today_data)
-          } else {
-            console.log('Exiting freeRT.')
-            this.scene.start(this.conf.day_sched[0].task, { today_config: this.conf, today_data: this.today_data })
-          }
+          this.target.visible = false
+          this.intro_target.visible = false
+          this.emitter.visible = true
+          this.time.delayedCall(5000, () => {
+            if (this.conf.day_sched.length === 0) {
+              console.log('Done! Redirect to end...')
+              this.scene.start('EndScene', this.today_data)
+            } else {
+              console.log('Exiting freeRT.')
+              this.scene.start(this.conf.day_sched[0].task, {
+                today_config: this.conf,
+                today_data: this.today_data,
+              })
+            }
+          })
         }
     }
   }
