@@ -153,7 +153,7 @@ export default class FreeRT extends Phaser.Scene {
           this.instruct_text.visible = true
           //
           let inst_txt = texts[this.task_config.stim_type][this.task_config.swap]
-          this.instruct_text.start(inst_txt, 10)
+          this.instruct_text.start(inst_txt, 50)
           this.instruct_text.typing.once('complete', () => {
             this.any_start.visible = true
             this.input.keyboard.once('keydown', (evt) => {

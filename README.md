@@ -3,6 +3,8 @@ https://actlab-colorific.netlify.app
 local devel: `npm run start` (no data saving, but everything else)
 (`netlify dev` to try bundled version + netlify fns)
 
+Production test: `npm run build && netlify dev`
+
 # Setup
 
 1. Install npm

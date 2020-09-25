@@ -119,7 +119,7 @@ export default class TitleScene extends Phaser.Scene {
           canvas.style.cursor = 'none'
         }, 1000)
       })
-      //this.scale.startFullscreen() // todo: warn folks
+      this.scale.startFullscreen() // todo: warn folks
       log.info(`RAF: ${this.game.loop.now}`)
       log.info('Starting next scene.')
       txt.removeInteractive()
