@@ -1,4 +1,5 @@
 import postData from '../utils/postdata'
+import { onBeforeUnload } from '../game'
 // a nice message, a summary, increment the day counter
 export default class EndScene extends Phaser.Scene {
   constructor() {
@@ -17,6 +18,7 @@ export default class EndScene extends Phaser.Scene {
       txt = "You're completely finished!\nThanks for participating."
     }
 
+    window.removeEventListener('beforeunload', onBeforeUnload)
     this.add
       .text(center, center, txt, {
         fontFamily: 'Verdana',

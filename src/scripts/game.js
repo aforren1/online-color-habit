@@ -122,7 +122,7 @@ export function onBeforeUnload(event) {
   return 'experiment not done yet.'
 }
 // todo: add back after iterating
-//window.addEventListener('beforeunload', onBeforeUnload)
+window.addEventListener('beforeunload', onBeforeUnload)
 
 // if prematurely ended, shuffle logs away?
 // we'll at least store a local time to get an idea if they're
