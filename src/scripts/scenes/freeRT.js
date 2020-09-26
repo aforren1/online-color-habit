@@ -18,11 +18,11 @@ const states = Enum([
   'END_SECTION', // pretty much like TAKE_A_BREAK, but more final
 ])
 const basic_txt =
-  "In this [color=yellow]Free Response[/color] section, you'll become familiar with the the training task. Each of the squares in the center of the screen corresponds directly to the [color=yellow]H, U, I, and L[/color] keys. When one square flashes, press the corresponding key as quickly as possible."
+  "In this [color=yellow]Free Response[/color] section, you'll become familiar with the the training task. Each of the squares in the center of the screen corresponds directly to the [color=yellow]H, U, I, and L[/color] keys. Use your [color=yellow]right hand[/color] for this task (H = index, U = middle, I = ring, L = little). When one square flashes, press the corresponding key as quickly as possible."
 const prac_txt =
-  "In this [color=yellow]Free Response[/color] section, you'll start or continue to learn which [color=yellow]color[/color] corresponds to which [color=yellow]computer key[/color]. Using your right hand, select one of the four keys when the square flashes a new color. Try to respond as quickly and correctly as possible."
+  "In this [color=yellow]Free Response[/color] section, you'll start or continue to learn which [color=yellow]color[/color] corresponds to which [color=yellow]computer key[/color]. Using your [color=yellow]right hand[/color] (H = index, U = middle, I = ring, L = little), select one of the four keys when the square flashes a new color. Try to respond as quickly and correctly as possible."
 const remap_txt =
-  'Now, we have switched some of the color-key relationships. This section will make you familiar with those changes. [b]take your time[/b], correctness is most important here.'
+  'Now, we have switched some of the color-key relationships. This section will make you familiar with those changes. [color=yellow]take your time[/color], correctness is most important here.'
 const texts = {
   finger: [basic_txt],
   color: [prac_txt, remap_txt],

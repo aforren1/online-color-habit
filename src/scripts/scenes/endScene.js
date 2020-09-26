@@ -17,7 +17,6 @@ export default class EndScene extends Phaser.Scene {
     if (day > 5) {
       txt = "You're completely finished!\nThanks for participating."
     }
-
     window.removeEventListener('beforeunload', onBeforeUnload)
     this.add
       .text(center, center, txt, {
@@ -37,5 +36,6 @@ export default class EndScene extends Phaser.Scene {
         log.error('Forwarding failed HARD')
       }
     })
+    this.scale.stopFullscreen()
   }
 }
